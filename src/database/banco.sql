@@ -71,3 +71,35 @@ INSERT INTO categoria_artigos (nome) VALUES
 ('Artigos de Conferência (AC)'),
 ('Capítulos de livros (CL)'),
 ('Notas Técnicas (NT)');
+
+CREATE TABLE grupos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+
+--Criar tabea de membro
+CREATE TABLE membros (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    descricao TEXT,
+    link VARCHAR(300),
+    foto VARCHAR(300),
+    grupo_id INTEGER NOT NULL,
+    CONSTRAINT fk_grupo FOREIGN KEY (grupo_id)
+        REFERENCES grupos (id)
+        ON DELETE CASCADE
+);
+
+--Alimentar tabela grupos
+
+INSERT INTO grupos (nome) VALUES
+('Coordenadores'),
+('Pesquisadores'),
+('Doutorandos'),
+('Mestrandos'),
+('Bolsistas');
+
+-- Alimentar tabela membros
+INSERT INTO membros (nome, descricao, link, foto, grupo_id) VALUES
+('Marcos Adami', 'Pesquisador titular do INPE, formado em Ciências Econômicas e com mestrado e doutorado em Sensoriamento Remoto pela mesma instituição. Atua com sistemas de informação geográfica e sensoriamento remoto, focando em séries temporais, mudanças no uso da terra, amostragem e estatísticas agrícolas.', 'https://lattes.cnpq.br/0000000000000000', '/uploads/membros/1762818184223.jpg', 1),
+('Cleverton Santana', 'Engenheiro Agrônomo com mestrado em Agricultura e doutorado em Sensoriamento Remoto. Atua na Conab como analista, pesquisando monitoramento agrícola com foco em estádios fenológicos, estimativas de área e produtividade, e classificação de culturas via sensoriamento remoto.', 'https://lattes.cnpq.br/6403186357124271', '/uploads/membros/1762819265705.jpeg', 2)
