@@ -3,25 +3,39 @@ const { pool } = require('../database/dbConfig');
 // GET ALL notícias
 async function getAllNoticias(_req, res) {
   try {
-    const result = await pool.query('SELECT * FROM noticias ORDER BY data_criacao DESC');
+    const result = await pool.query('SELECT * FROM noticias WHERE exibir = true ORDER BY data_criacao DESC');
     res.status(200).json(result.rows);
   } catch (error) {
     console.error('Erro ao buscar notícias:', error);
     res.status(500).json({ error: 'Erro ao buscar notícias' });
   }
 };
+
+
 // GET notícias DESTAQUE
 async function getDestaqueNoticias(_req, res) {
   try {
     const result = await pool.query(
-      'SELECT * FROM noticias WHERE destaque = true ORDER BY data_criacao DESC'
-    );
+      'SELECT * FROM noticias WHERE destaque = true AND exibir = true ORDER BY data_criacao DESC');
     res.status(200).json(result.rows);
   } catch (error) {
     console.error('Erro ao buscar notícias destaque:', error);
     res.status(500).json({ error: 'Erro ao buscar notícias destaque' });
   }
 };
+
+async function getDefesasNoticias(_req, res) {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM noticias WHERE categoria = Defesa AND exibir = true ORDER BY data_criacao DESC"
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar notícias de defesa:', error);
+    res.status(500).json({ error: 'Erro ao buscar notícias de defesa' });
+  }
+};
+
 //DELETE noticia
 async function deleteNoticia(req, res) {
   const { id } = req.params;
@@ -57,9 +71,8 @@ async function deleteAllNoticias(_req, res) {
 //CREATE noticia
 async function createNoticia(req, res) {
   const { titulo, subtitulo, data_criacao, url_imagem, texto, categoria,destaque,url_noticia, exibir} = req.body;
-  // Converte 'on' (de um checkbox/switch) para true, e a ausência para false.
-    exibir = (exibir === 'on' || exibir === 'true' || exibir === true);
-    
+
+  exibir = (exibir === 'on' || exibir === 'true' || exibir === true);    
   
   try {
     const result = await pool.query(
@@ -84,8 +97,10 @@ async function createNoticia(req, res) {
 async function updateNoticia(req, res) {
   const { id } = req.params;
   // Pegue todas as colunas que podem ser atualizadas
-  const { titulo, subtitulo, data_criacao, url_imagem, texto, categoria, destaque, url_noticia } = req.body;
+  let { titulo, subtitulo, data_criacao, url_imagem, texto, categoria, destaque, url_noticia, exibir } = req.body;
   
+  // Trata o 'exibir' que vem do formulário
+  exibir = (exibir === 'on' || exibir === 'true' || exibir === true);
 
   try {
     
@@ -99,11 +114,11 @@ async function updateNoticia(req, res) {
          texto = $5, 
          categoria = $6, 
          destaque = $7, 
-         url_noticia = $8
-       WHERE id_noticias = $9  -- Corrigido: id_noticias
+         url_noticia = $8,
+         exibir = $9
+       WHERE id_noticias = $10
        RETURNING *`,
-      // Corrigido: variáveis corretas na ordem certa
-      [titulo, subtitulo, data_criacao, url_imagem, texto, categoria, destaque, url_noticia, id] 
+      [titulo, subtitulo, data_criacao, url_imagem, texto, categoria, destaque, url_noticia, exibir, id] 
     );
 
     if (result.rows.length === 0) {
@@ -125,6 +140,7 @@ module.exports = {
   createNoticia,
   getAllNoticias,
   getDestaqueNoticias,
+  getDefesasNoticias,
   updateNoticia,
   deleteNoticia,
   deleteAllNoticias

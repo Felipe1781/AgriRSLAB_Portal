@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const containerCompleto = document.getElementById('container-noticias-dinamicas'); 
     const containerDestaques = document.getElementById('cards-noticias'); 
 
-    // PÁGINA "TODAS AS NOTÍCIAS"
+    // PÁGINA "TODAS AS NOTÍCIAS" (notícias1)
     if (containerCompleto) {
         const filtroAno = document.getElementById("YearSelection");
         const filtroCategoria = document.getElementById("CategorySelection");
@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // PÁGINA HOME
     else if (containerDestaques) {
         carregarDestaques();
+        carregarDefesas();
     }
     
     configurarCarrosseis();
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =========================================
-// LÓGICA PRINCIPAL
+// LÓGICA PRINCIPAL (notícias1)
 // =========================================
 async function carregarTodasNoticias() {
     const container = document.getElementById('container-noticias-dinamicas');
@@ -110,8 +111,6 @@ function aplicarFiltros(resetar = false) {
     noticiasFiltradas.sort((a, b) => {
         const dataA = new Date(a.data_criacao);
         const dataB = new Date(b.data_criacao);
-
-        // Primeiro compara o MÊS (0 a 11)
         const mesDiff = dataA.getMonth() - dataB.getMonth();
         
         if (mesDiff !== 0) {
@@ -132,67 +131,9 @@ function aplicarFiltros(resetar = false) {
     carregarMaisNoticias();
 }
 
-function carregarMaisNoticias() {
-    const container = document.getElementById('container-noticias-dinamicas');
-    const btnContainer = document.querySelector(".ver-todas");
 
-    if (noticiasFiltradas.length === 0) {
-        container.innerHTML = '<p class="aviso">Nenhuma notícia encontrada.</p>';
-        if (btnContainer) btnContainer.style.display = 'none';
-        return;
-    }
-
-    // Paginação: pega o próximo bloco
-    const proximoLote = noticiasFiltradas.slice(itensVisiveis, itensVisiveis + ITENS_POR_PAGINA);
-
-    proximoLote.forEach(noticia => {
-        const dataNoticia = noticia.data_criacao; 
-        const nomeMes = getNomeMes(dataNoticia);
-        
-        // CORREÇÃO DO AGRUPAMENTO:
-        // Usa apenas o nome do mês como chave. 
-        // Isso junta Jan 2025 e Jan 2024 sob o mesmo título "Janeiro"
-        const chaveMes = nomeMes;
-
-        if (chaveMes !== ultimoMesRenderizado) {
-            const nomeMesCap = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
-            container.insertAdjacentHTML('beforeend', 
-                `<h2 class="titulo-mes">${nomeMesCap}</h2>`
-            );
-            ultimoMesRenderizado = chaveMes;
-        }
-
-        // HTML do Card
-        const html = `
-            <a href="${noticia.url_noticia || '#'}" class="link-card">
-                <div class="card-noticia">
-                    <img class="imageNotice" src="${noticia.url_imagem}" onerror="this.style.display='none'" alt="${noticia.titulo}">
-                    <div class="texto">
-                        <span class="tagEvent">${noticia.categoria || 'Geral'}</span>
-                        <h3>${noticia.titulo}</h3>
-                        <p>${noticia.texto ? noticia.texto.substring(0, 120) + '...' : ''}</p>
-                        <span class="dateEvent">
-                            <time datetime="${dataNoticia}">${formatarData(dataNoticia)}</time>
-                        </span>
-                        <p class="continuar-lendo">Ler mais</p>
-                    </div>
-                </div>
-            </a>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    });
-
-    itensVisiveis += proximoLote.length;
-
-    // Controla visibilidade do botão
-    if (itensVisiveis >= noticiasFiltradas.length) {
-        if (btnContainer) btnContainer.style.display = 'none';
-    } else {
-        if (btnContainer) btnContainer.style.display = 'block';
-    }
-}
 // =========================================
-// LÓGICA: PÁGINA HOME (DESTAQUES)
+// LÓGICA: PÁGINA HOME
 // =========================================
 async function carregarDestaques() {
     const container = document.getElementById('cards-noticias');
@@ -234,10 +175,104 @@ async function carregarDestaques() {
         container.innerHTML = '<p>Não foi possível carregar os destaques.</p>';
     }
 }
-async function carregarDefesas() {
 
+async function carregarDefesas() {
+    const container = document.querySelector('.cards-defesas');
+    if (!container) return; // Se não estiver na página home, não faz nada
+
+    container.innerHTML = '<p style="padding: 20px; color: #555; width: 100%; text-align: center;">Carregando defesas...</p>';
+
+    try {
+        const response = await fetch('/api/noticias/defesas');
+        if (!response.ok) throw new Error('Erro API Defesas');
+        
+        const defesas = await response.json();
+        container.innerHTML = ''; // Limpa o "carregando"
+
+        if (defesas.length === 0) {
+            container.innerHTML = '<p style="padding: 20px; color: #555; width: 100%; text-align: center;">Nenhuma defesa agendada no momento.</p>';
+            return;
+        }
+
+        defesas.forEach(defesa => {
+            // Este HTML é baseado nos cards estáticos que estavam em noticias.html
+            const htmlCard = `
+                <div class="card-defesa">
+                    <img src="${defesa.url_imagem}" alt="${defesa.titulo}" onerror="this.src='../../imagens/1.1Imagens Git/logo_404notfound.png'">
+                    <h3>${defesa.titulo}</h3>
+                    <p>${defesa.subtitulo || ''}</p>
+                    <span>${formatarData(defesa.data_criacao)}</span>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', htmlCard);
+        });
+
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p style="padding: 20px; color: red; width: 100%; text-align: center;">Erro ao carregar defesas.</p>';
+    }
 }
 
+// =========================================
+// FUNÇÕES Página notícias 1
+// =========================================
+function carregarMaisNoticias() {
+    const container = document.getElementById('container-noticias-dinamicas');
+    const btnContainer = document.querySelector(".ver-todas");
+
+    if (noticiasFiltradas.length === 0) {
+        container.innerHTML = '<p class="aviso">Nenhuma notícia encontrada.</p>';
+        if (btnContainer) btnContainer.style.display = 'none';
+        return;
+    }
+
+    // Paginação: pega o próximo bloco
+    const proximoLote = noticiasFiltradas.slice(itensVisiveis, itensVisiveis + ITENS_POR_PAGINA);
+
+    proximoLote.forEach(noticia => {
+        const dataNoticia = noticia.data_criacao; 
+        const nomeMes = getNomeMes(dataNoticia);
+        
+        //AGRUPAMENTO:
+        const chaveMes = nomeMes;
+
+        if (chaveMes !== ultimoMesRenderizado) {
+            const nomeMesCap = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+            container.insertAdjacentHTML('beforeend', 
+                `<h2 class="titulo-mes">${nomeMesCap}</h2>`
+            );
+            ultimoMesRenderizado = chaveMes;
+        }
+
+        // HTML do Card
+        const html = `
+            <a href="${noticia.url_noticia || '#'}" class="link-card">
+                <div class="card-noticia">
+                    <img class="imageNotice" src="${noticia.url_imagem}" onerror="this.style.display='none'" alt="${noticia.titulo}">
+                    <div class="texto">
+                        <span class="tagEvent">${noticia.categoria || 'Geral'}</span>
+                        <h3>${noticia.titulo}</h3>
+                        <p>${noticia.texto ? noticia.texto.substring(0, 120) + '...' : ''}</p>
+                        <span class="dateEvent">
+                            <time datetime="${dataNoticia}">${formatarData(dataNoticia)}</time>
+                        </span>
+                        <p class="continuar-lendo">Ler mais</p>
+                    </div>
+                </div>
+            </a>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+
+    itensVisiveis += proximoLote.length;
+
+    // Controla visibilidade do botão
+    if (itensVisiveis >= noticiasFiltradas.length) {
+        if (btnContainer) btnContainer.style.display = 'none';
+    } else {
+        if (btnContainer) btnContainer.style.display = 'block';
+    }
+}
 // =========================================
 // FUNÇÕES GERAIS
 // =========================================
