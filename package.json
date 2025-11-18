@@ -25,6 +25,10 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+<<<<<<< HEAD
+=======
+    "nodemailer": "^6.9.16",
+>>>>>>> 16661f7 (Reorganizando meu repositorio como está na verção correta adicionando fomulários)
     "multer": "^2.0.2",
     "pg": "^8.16.3"
   },
@@ -32,4 +36,8 @@
     "cors": "^2.8.5",
     "nodemon": "^3.1.10"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 16661f7 (Reorganizando meu repositorio como está na verção correta adicionando fomulários)
