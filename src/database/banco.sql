@@ -363,3 +363,59 @@ VALUES (
     TRUE,
     'em-andamento'
 );
+
+-- ======================================================================================
+
+
+-- ======  VAGAS  ===========================
+
+CREATE TABLE vagas (
+    vaga_id SERIAL PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descricao TEXT NOT NULL,
+    link_candidatura VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    exibir BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE requisitos_vaga (
+    req_id SERIAL PRIMARY KEY,
+    vaga_id INT NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    FOREIGN KEY (vaga_id)
+        REFERENCES vagas(vaga_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE beneficios_vaga (
+    benef_id SERIAL PRIMARY KEY,
+    vaga_id INT NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    FOREIGN KEY (vaga_id)
+        REFERENCES vagas(vaga_id)
+        ON DELETE CASCADE
+);
+
+INSERT INTO vagas (titulo, descricao, link_candidatura, exibir)
+VALUES (
+    'Analista de Sensoriamento Remoto',
+    'Atuação com análise de imagens satelitais, geração de índices espectrais e apoio em projetos agrícolas.',
+    'https://example.com/candidatura',
+    TRUE
+)
+
+INSERT INTO requisitos_vaga (vaga_id, descricao)
+VALUES
+(1, 'Experiência com dados Sentinel-2'),
+(1, 'Conhecimento em processamento de imagens'),
+(1, 'Noções básicas de Python'),
+(1, 'Entendimento de índices NDVI e EVI'),
+(1, 'Habilidade com QGIS ou ArcGIS');
+
+INSERT INTO beneficios_vaga (vaga_id, descricao)
+VALUES
+(1, 'Bolsa auxílio'),
+(1, 'Participação em projetos científicos reais'),
+(1, 'Flexibilidade de horário'),
+(1, 'Acesso a dados exclusivos do laboratório'),
+(1, 'Possibilidade de aprendizado avançado em geotecnologias');

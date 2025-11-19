@@ -1,63 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Gerenciar Notícias</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="style.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wdth,wght@0,18..144,87..112,300..900;1,18..144,87..112,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wdth,wght@0,18..144,87..112,300..900;1,18..144,87..112,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <header>
         <div class="headerTop">
             <h1 class="h1HEADER">Painel Administrativo</h1>
         </div>
-        <div class="header-actions">
-            <a href="paginas.html" class="btn-secondary">Voltar</a>
-            <button id="btn-abrir-cadastro" class="btn-add">
-                + Cadastrar Nova Notícia
-            </button>
-        </div>
     </header>
 
-    <main>
-        <h2>Gerenciamento de Notícias</h2>
+    <div class="admin-layout">
+        <aside class="admin-sidebar-placeholder">
+            <!-- PROVISORIO -->
+            <nav class="sidebar-menu">
+                <a href="inicio-admin.html">Página Inicial</a>
+                <a href="artigos-admin.html">Artigos e Publicações</a>
+                <a href="noticias-admin.html">Notícias</a>
+                <a href="membros-admin.html">Membros</a>
+                <a href="projetos-admin.html">Projetos</a>
+                <a href="vagas-admin.html">Vagas</a>
+                <a href="../pagina-inicial" target="_blank">Ir ao Site</a>
+            </nav>
+            <!-- espaço reservado para o menu lateral  -->
+        </aside>
 
-        <div class="filtros-superiores">
-            <select id="CategorySelection" class="filtro-select">
-                <option value="todas" selected>Todas as Categorias</option>
-                <option value="Curso">Curso</option>
-                <option value="Defesa">Defesa</option>
-                <option value="Informativo">Informativo</option>
-            </select>
-            <select id="YearSelection" class="filtro-select">
-                <option value="todos" selected>Todos os Anos</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-            </select>
-        </div>
+        <main>
 
-        <div id="noticias-container" class="admin-noticias-lista">
+            <div class="admin-membros-header">
+                <div class="admin-membros-texto">
+                    <h2 class="titulo-secao">Gerenciamento de Notícias</h2>
+                    <p class="admin-membros-descricao">
+                        Aqui você pode incluir, editar e excluir notícias publicadas no AgriRSLab.
+                    </p>
+                </div>
+
+                <button id="btn-abrir-cadastro" class="btn-primary btnCadastro">
+                    + Cadastrar Nova Notícia
+                </button>
             </div>
 
-        <div class="ver-todas">
-            <button class="btn-secondary btn-ver-mais">Ver mais notícias</button>
-        </div>
-    </main>
 
+            <div class="filtros-superiores">
+                <select id="CategorySelection" class="filtro-select">
+                    <option value="todas" selected>Todas as Categorias</option>
+                    <option value="Curso">Curso</option>
+                    <option value="Defesa">Defesa</option>
+                    <option value="Informativo">Informativo</option>
+                </select>
+                <select id="YearSelection" class="filtro-select">
+                    <option value="todos" selected>Todos os Anos</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+
+            <div id="noticias-container" class="admin-noticias-lista">
+            </div>
+
+            <div class="ver-todas">
+                <button class="btn-secondary btn-ver-mais">Ver mais notícias</button>
+            </div>
+        </main>
+    </div>
     <div id="modal-cadastro" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h3>Cadastrar Nova Notícia</h3>
             <form id="form-cadastro" enctype="multipart/form-data">
-                
+
                 <div class="form-group">
                     <label for="cadastro-titulo">Título *</label>
                     <input type="text" id="cadastro-titulo" name="titulo" required>
@@ -90,7 +116,8 @@
 
                 <div class="form-group">
                     <label for="cadastro-url_noticia">URL (link) da Notícia (Opcional)</label>
-                    <input type="text" id="cadastro-url_noticia" name="url_noticia" placeholder="https://exemplo.com/noticia-completa">
+                    <input type="text" id="cadastro-url_noticia" name="url_noticia"
+                        placeholder="https://exemplo.com/noticia-completa">
                 </div>
 
                 <div class="form-group">
@@ -99,7 +126,7 @@
                 </div>
 
                 <div class="form-group-grid-2">
-                     <div class="form-group switch-group">
+                    <div class="form-group switch-group">
                         <label for="cadastro-destaque">Destaque?</label>
                         <label class="switch">
                             <input type="checkbox" id="cadastro-destaque" name="destaque">
@@ -126,7 +153,7 @@
             <h3>Editar Notícia</h3>
             <form id="form-edicao" enctype="multipart/form-data">
                 <input type="hidden" id="edit-id" name="id">
-                
+
                 <div class="form-group">
                     <label for="edit-titulo">Título *</label>
                     <input type="text" id="edit-titulo" name="titulo" required>
@@ -136,7 +163,7 @@
                     <label for="edit-subtitulo">Subtítulo</label>
                     <input type="text" id="edit-subtitulo" name="subtitulo">
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="edit-texto">Texto Completo</label>
                     <textarea id="edit-texto" name="texto" rows="5"></textarea>
                 </div>
@@ -155,7 +182,7 @@
                         </select>
                     </div>
                 </div>
-               
+
                 <div class="form-group">
                     <label for="edit-url_noticia">URL (link) da Notícia</label>
                     <input type="text" id="edit-url_noticia" name="url_noticia">
@@ -167,7 +194,7 @@
                 </div>
 
                 <div class="form-group-grid-2">
-                     <div class="form-group switch-group">
+                    <div class="form-group switch-group">
                         <label for="edit-destaque">Destaque?</label>
                         <label class="switch">
                             <input type="checkbox" id="edit-destaque" name="destaque">
@@ -206,4 +233,5 @@
 
     <script src="noticias-admin.js"></script>
 </body>
+
 </html>

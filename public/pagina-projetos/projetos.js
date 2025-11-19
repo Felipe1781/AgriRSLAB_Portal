@@ -1,34 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-
-    if (params.has('id')) {
-        carregarProjetoUnico(params.get('id'));  // Página detalhe
-    } else {
-        carregarListaDeProjetos();               // Página lista
-        configurarFiltros();
-    }
+    carregarProjetos();
+    configurarFiltros();
 });
 
-
-// ------------------------------------------
-// LISTA DE PROJETOS
-// ------------------------------------------
-
-async function carregarListaDeProjetos() {
+async function carregarProjetos() {
     try {
         const resposta = await fetch('/api/projetos/publicos');
         const projetos = await resposta.json();
 
+        // salva para filtros
         window.todosProjetos = projetos;
+
         renderizarProjetos(projetos);
+
     } catch (erro) {
-        console.error('Erro ao carregar projetos:', erro);
+        console.error("Erro ao carregar projetos:", erro);
     }
 }
 
+// ===============================================
+// RENDERIZA LISTA IGUAL AO MODELO ESTÁTICO
+// ===============================================
 function renderizarProjetos(lista) {
-    const container = document.querySelector('.projetos-galeria');
+    const container = document.getElementById('lista-projetos');
     const mensagem = document.getElementById('mensagem');
+
+    if (!container) return;
 
     container.innerHTML = '';
 
@@ -39,24 +36,27 @@ function renderizarProjetos(lista) {
 
     mensagem.style.display = 'none';
 
-    lista.forEach(proj => {
-        const item = document.createElement('a');
-        item.classList.add('item-galeria');
+    lista.forEach((proj, index) => {
 
-        if (proj.fase) item.classList.add(proj.fase);
+        // destaque = primeiro item
+        const destaqueClasse = index === 0 ? 'item-destaque' : '';
 
-        // Link para a página detalhe
-        item.href = `projeto-detalhe.html?id=${proj.id}`;
+        const a = document.createElement('a');
+        a.href = `projeto-detalhe.html?id=${proj.id}`;
+        a.className = `item-galeria ${destaqueClasse} ${proj.fase || ''}`;
 
-        item.innerHTML = `
+        a.innerHTML = `
             <img src="${proj.url_imagem}" alt="${proj.titulo}">
             <div class="overlay-texto">${proj.titulo}</div>
         `;
 
-        container.appendChild(item);
+        container.appendChild(a);
     });
 }
 
+// ===============================================
+// FILTROS (igual ao antigo)
+// ===============================================
 function configurarFiltros() {
     const botoes = document.querySelectorAll('.botao-filtro');
 
@@ -67,16 +67,16 @@ function configurarFiltros() {
 
             const filtro = botao.getAttribute('data-filtro');
 
-            if (!window.todosProjetos) return;
-
             if (filtro === 'todos') {
                 renderizarProjetos(window.todosProjetos);
-            } else {
-                const filtrados = window.todosProjetos.filter(
-                    proj => proj.fase === filtro
-                );
-                renderizarProjetos(filtrados);
+                return;
             }
+
+            const filtrados = window.todosProjetos.filter(
+                proj => proj.fase === filtro
+            );
+
+            renderizarProjetos(filtrados);
         });
     });
 }

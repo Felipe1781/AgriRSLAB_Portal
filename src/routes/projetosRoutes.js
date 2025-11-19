@@ -3,7 +3,16 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const projetosController = require('../controllers/projetosController');
+
+const {
+    createProjeto,
+    getAllProjetos,
+    getProjetosPublicados,
+    getProjetosPublicosComDestaque,
+    getProjetoById,
+    updateProjeto,
+    deleteProjeto
+} = require('../controllers/projetosController');
 
 const uploadDir = path.resolve(__dirname, '..', 'upload', 'projetos');
 
@@ -25,15 +34,28 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage,
     limits: { fileSize: 5 * 1024 * 1024 } // 5 MB
-}).fields([
-    { name: 'imagem', maxCount: 1 }
-]);
+}).fields([{ name: 'imagem', maxCount: 1 }]);
 
-router.get('/publicos', projetosController.getProjetosPublicados);
-router.post('/', upload, projetosController.createProjeto);
-router.get('/', projetosController.getAllProjetos);
-router.get('/:id', projetosController.getProjetoById);
-router.put('/:id', upload, projetosController.updateProjeto);
-router.delete('/:id', projetosController.deleteProjeto);
+
+// ==================================================
+//  ROTAS ESPECÍFICAS 
+// ==================================================
+
+// ✔ Nova rota para destaque
+router.get('/publicos-com-destaque', getProjetosPublicosComDestaque);
+
+// ✔ Rota normal de publicados
+router.get('/publicos', getProjetosPublicados);
+
+// ✔ Listar todos
+router.get('/', getAllProjetos);
+
+// ==================================================
+// ROTAS DINÂMICAS 
+// ==================================================
+router.get('/:id', getProjetoById);
+router.post('/', upload, createProjeto);
+router.put('/:id', upload, updateProjeto);
+router.delete('/:id', deleteProjeto);
 
 module.exports = router;

@@ -15,10 +15,16 @@ if (!fs.existsSync(uploadDir)) {
 // ------------------------------------------------------
 
 async function createProjeto(req, res) {
-    let { titulo, conteudo, autores, exibir, fase } = req.body;
+    let { titulo, conteudo, autores, exibir, fase, destaque } = req.body;
 
     exibir = (exibir === 'on' || exibir === 'true' || exibir === true);
+    destaque = (destaque === 'on' || destaque === 'true' || destaque === true);
     fase = fase || 'finalizado';
+
+    // Se marcar destaque, desmarca todos os outros
+    if (destaque) {
+        await pool.query("UPDATE projetos SET destaque = false");
+    }
 
     const imagemFile =
         req.files &&
@@ -38,11 +44,11 @@ async function createProjeto(req, res) {
     }
 
     const query = `
-        INSERT INTO projetos (titulo, conteudo, autores, url_imagem, exibir, fase)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO projetos (titulo, conteudo, autores, url_imagem, exibir, fase, destaque)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `;
-    const values = [titulo, conteudo, autores || null, final_imagem, exibir, fase];
+    const values = [titulo, conteudo, autores || null, final_imagem, exibir, fase, destaque];
 
     try {
         const resultado = await pool.query(query, values);
@@ -52,6 +58,7 @@ async function createProjeto(req, res) {
         res.status(500).json({ mensagem: 'Erro interno ao criar projeto.' });
     }
 }
+
 
 
 // ------------------------------------------------------
@@ -128,9 +135,15 @@ async function updateProjeto(req, res) {
 
         const projetoAntigo = resAntigo.rows[0];
 
-        let { titulo, conteudo, autores, exibir, fase } = req.body;
+        let { titulo, conteudo, autores, exibir, fase, destaque } = req.body;
 
         exibir = (exibir === 'on' || exibir === 'true' || exibir === true);
+        destaque = (destaque === 'on' || destaque === 'true' || destaque === true);
+
+        // Se marcar destaque, desmarca os outros
+        if (destaque) {
+            await pool.query("UPDATE projetos SET destaque = false");
+        }
 
         const imagemFile =
             req.files &&
@@ -159,6 +172,9 @@ async function updateProjeto(req, res) {
 
         sets.push(`exibir = $${idx++}`);
         values.push(exibir);
+
+        sets.push(`destaque = $${idx++}`);
+        values.push(destaque);
 
         values.push(id);
 
@@ -191,6 +207,7 @@ async function updateProjeto(req, res) {
         res.status(500).json({ mensagem: 'Erro interno ao atualizar projeto.' });
     }
 }
+
 
 
 // ------------------------------------------------------
@@ -235,6 +252,26 @@ async function deleteProjeto(req, res) {
     }
 }
 
+async function getProjetosPublicosComDestaque(req, res) {
+    try {
+        const destaque = await pool.query(
+            "SELECT * FROM projetos WHERE exibir = true AND destaque = true LIMIT 1"
+        );
+
+        const outros = await pool.query(
+            "SELECT * FROM projetos WHERE exibir = true AND destaque = false ORDER BY id DESC"
+        );
+
+        res.status(200).json({
+            destaque: destaque.rows[0] || null,
+            outros: outros.rows
+        });
+
+    } catch (error) {
+        console.error('Erro ao listar projetos com destaque:', error.message);
+        res.status(500).json({ mensagem: 'Erro ao listar projetos.' });
+    }
+}
 
 // ------------------------------------------------------
 
@@ -244,5 +281,7 @@ module.exports = {
     getProjetosPublicados,
     getProjetoById,
     updateProjeto,
-    deleteProjeto
+    deleteProjeto,
+    getProjetosPublicosComDestaque
 };
+

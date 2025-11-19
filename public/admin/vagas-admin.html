@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Vagas</title>
+
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="headerTop">
+            <h1 class="h1HEADER">Painel Administrativo</h1>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar-placeholder">
+            <nav class="sidebar-menu">
+                <a href="inicio-admin.html">Página Inicial</a>
+                <a href="artigos-admin.html">Artigos e Publicações</a>
+                <a href="noticias-admin.html">Notícias</a>
+                <a href="membros-admin.html">Membros</a>
+                <a href="projetos-admin.html">Projetos</a>
+                <a href="vagas-admin.html" class="active">Vagas</a>
+                <a href="../pagina-inicial" target="_blank">Ir ao Site</a>
+            </nav>
+        </aside>
+
+        <main>
+
+            <div class="admin-membros-header">
+                <div class="admin-membros-texto">
+                    <h2 class="titulo-secao">Gerenciamento de Vagas</h2>
+                    <p class="admin-membros-descricao">
+                        Aqui você pode cadastrar, editar e excluir vagas do AgriRSLab.
+                    </p>
+                </div>
+
+                <button id="btn-abrir-cadastro" class="btn-primary btnCadastro">
+                    + Cadastrar Nova Vaga
+                </button>
+            </div>
+
+            <section id="container-vagas">
+                <h2>Carregando vagas...</h2>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL CADASTRO -->
+    <!-- MODAL CADASTRO -->
+    <div id="modal-cadastro" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Cadastrar Nova Vaga</h3>
+
+            <form id="form-cadastro">
+
+                <label>Título *</label>
+                <input type="text" id="cad-titulo" required>
+
+                <label>Descrição *</label>
+                <textarea id="cad-descricao" rows="4" required></textarea>
+
+                <label>Link para candidatura *</label>
+                <input type="url" id="cad-link">
+
+                <hr>
+
+                <h4>Requisitos</h4>
+                <div id="cad-requisitos-list"></div>
+                <button type="button" id="btn-add-requisito" class="btn-secondary">+ Adicionar requisito</button>
+
+                <hr>
+
+                <h4>Benefícios</h4>
+                <div id="cad-beneficios-list"></div>
+                <button type="button" id="btn-add-beneficio" class="btn-secondary">+ Adicionar benefício</button>
+
+                <hr>
+
+                <label class="form-group">
+                    <span>Exibir no site?</span>
+                    <label class="switch">
+                        <input type="checkbox" id="cad-exibir" checked>
+                        <span class="slider"></span>
+                    </label>
+                </label>
+
+                <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MODAL EDITAR -->
+    <!-- MODAL EDITAR -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Editar Vaga</h3>
+
+            <form id="form-editar">
+                <input type="hidden" id="edit-id">
+
+                <label>Título *</label>
+                <input type="text" id="edit-titulo" required>
+
+                <label>Descrição *</label>
+                <textarea id="edit-descricao" rows="4" required></textarea>
+
+                <label>Link para candidatura *</label>
+                <input type="url" id="edit-link">
+
+                <hr>
+
+                <h4>Requisitos</h4>
+                <div id="edit-requisitos-list"></div>
+                <button type="button" id="btn-edit-add-requisito" class="btn-secondary">
+                    + Adicionar requisito
+                </button>
+
+                <hr>
+
+                <h4>Benefícios</h4>
+                <div id="edit-beneficios-list"></div>
+                <button type="button" id="btn-edit-add-beneficio" class="btn-secondary">
+                    + Adicionar benefício
+                </button>
+
+                <hr>
+
+                <label class="form-group">
+                    <span>Exibir no site?</span>
+                    <label class="switch">
+                        <input type="checkbox" id="edit-exibir">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MODAL DELETAR -->
+    <div id="modal-deletar" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Excluir Vaga</h3>
+            <p>Tem certeza que deseja excluir a vaga <strong id="del-nome"></strong>?</p>
+            <button id="btn-confirmar-delete" class="btn-danger">Excluir</button>
+            <button id="btn-cancelar-delete" class="btn-secondary">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="custom-toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="vagas-admin.js"></script>
+
+</body>
+
+</html>

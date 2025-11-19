@@ -62,25 +62,20 @@ function criarArtigoCard(artigo) {
             <p><strong>Categoria:</strong> ${artigo.categoria_nome || 'N/A'}</p>
             <p><strong>Cadastrado em:</strong> ${dataFormatada}</p>
             
-            <div class="card-actions">
-                <a href="${getFullUrl(artigo.link_pdf)}" target="_blank" class="btn-primary">
-                    Baixar PDF
-                </a>
-                
-                <a href="${artigo.link_doi}" target="_blank" class="btn-secondary">
-                    Ver DOI
-                </a>
+<div class="card-actions">
 
-                <button class="btn-secondary btn-abrir-atualizacao" 
-                        data-id="${artigo.id}">
-                    Atualizar
-                </button>
+    <div class="line-top">
+        <a href="${getFullUrl(artigo.link_pdf)}" target="_blank" class="btn-primary">Baixar PDF</a>
+        <a href="${artigo.link_doi}" target="_blank" class="btn-secondary">Ver DOI</a>
+    </div>
 
-                <button class="btn-danger btn-abrir-delecao" 
-                        data-id="${artigo.id}" data-titulo="${artigo.titulo}">
-                    Deletar
-                </button>
-            </div>
+    <div class="line-bottom">
+        <button class="btn-secondary btn-abrir-atualizacao" data-id="${artigo.id}">Atualizar</button>
+        <button class="btn-danger btn-abrir-delecao" data-id="${artigo.id}" data-titulo="${artigo.titulo}">Deletar</button>
+    </div>
+
+</div>
+
         </div>
     `;
     return card;
@@ -97,9 +92,9 @@ async function carregarArtigos() {
             throw new Error(`Erro HTTP! Status: ${response.status}`);
         }
         const artigos = await response.json();
-        
+
         artigosContainer.innerHTML = ''; // Limpa o "Carregando..."
-        
+
         if (artigos.length === 0) {
             artigosContainer.innerHTML = '<h2>Nenhum artigo encontrado. Cadastre o primeiro!</h2>';
             return;
@@ -233,7 +228,7 @@ function abrirModalDelecao(event) {
     fecharModais();
     artigoParaDeletarId = event.target.dataset.id;
     const titulo = event.target.dataset.titulo;
-    
+
     document.getElementById('delete-titulo-confirm').textContent = titulo;
     modalDelecao.style.display = 'flex'; // Alterado de 'block' para 'flex'
 }
@@ -292,7 +287,7 @@ async function enviarFormularioComArquivos(formData, method, url) {
             method: method,
             // Não defina o 'Content-Type': o navegador faz isso automaticamente para FormData,
             // garantindo a inclusão correta do boundary para os arquivos.
-            body: formData, 
+            body: formData,
         });
 
         if (!response.ok) {
@@ -304,7 +299,7 @@ async function enviarFormularioComArquivos(formData, method, url) {
         fecharModais();
         await carregarArtigos(); // Recarrega a lista para mostrar a atualização
         showToast(`Artigo ${method === 'POST' ? 'cadastrado' : 'atualizado'} com sucesso!`, 'success');
-        
+
     } catch (error) {
         console.error('Erro ao processar formulário:', error);
         showToast(`Falha na operação: ${error.message}`, 'error');
@@ -315,16 +310,16 @@ async function enviarFormularioComArquivos(formData, method, url) {
 // Submissão do Formulário de Cadastro (POST)
 formCadastro.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData(formCadastro);
-    
+
     // Lógica para Imagem: prioriza o upload de arquivo sobre a URL se ambos forem preenchidos
     const urlImagemInput = document.getElementById('url_imagem_input').value;
     const imagemFileInput = document.getElementById('imagem_file_input');
-    
+
     if (imagemFileInput.files.length > 0) {
         // O arquivo já está no formData. Apenas remove o campo de URL.
-        formData.delete('url_imagem_input'); 
+        formData.delete('url_imagem_input');
     } else if (urlImagemInput) {
         // Se há URL, a adiciona como um campo de texto 'url_imagem'
         formData.append('url_imagem', urlImagemInput);
@@ -358,19 +353,19 @@ formCadastro.addEventListener('submit', (e) => {
 // Submissão do Formulário de Atualização (PUT)
 formAtualizacao.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     const id = document.getElementById('edit-id').value;
     const formData = new FormData(formAtualizacao);
-    
+
     // --- Lógica de Imagem para Atualização ---
     const novaUrlImagemInput = document.getElementById('edit-url_imagem_input').value;
     const novaImagemFileInput = document.getElementById('edit-imagem_file_input');
-    
+
     // Se um novo arquivo foi upado
     if (novaImagemFileInput.files.length > 0) {
         // O Multer no backend pegará este arquivo e salvará o novo caminho.
-        formData.delete('edit-url_imagem_input'); 
-    } 
+        formData.delete('edit-url_imagem_input');
+    }
     // Se uma nova URL foi digitada (e NÃO um arquivo upado)
     else if (novaUrlImagemInput) {
         formData.delete('imagem'); // Garante que o campo de arquivo vazio não seja enviado
@@ -387,7 +382,7 @@ formAtualizacao.addEventListener('submit', (e) => {
     if (novoPdfFileInput.files.length > 0) {
         // Se um novo arquivo de PDF foi enviado, removemos o campo de texto
         // para que o backend priorize o arquivo.
-        formData.delete('link_pdf'); 
+        formData.delete('link_pdf');
     }
     // Se nenhum arquivo novo foi enviado, o campo 'link_pdf' (que já contém o valor
     // existente) será enviado normalmente, e o backend saberá como preservá-lo.
@@ -468,7 +463,7 @@ setupImagePreview('url_imagem_input', 'imagem_file_input', 'cadastro-img-preview
 // Configura o preview de imagem para o modal de atualização
 setupImagePreview('edit-url_imagem_input', 'edit-imagem_file_input', 'edit-img-preview');
 
-// Aviso importante: 
+// Aviso importante:
 // Para que a listagem funcione (carregarArtigos), você precisa ter ao menos
 // 1. Uma categoria na tabela 'categoria_artigos' do seu PostgreSQL.
 // 2. Um artigo cadastrado na tabela 'artigos' que use o ID dessa categoria.

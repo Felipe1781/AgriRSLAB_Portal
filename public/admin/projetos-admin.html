@@ -7,6 +7,7 @@
     <title>Admin do AgriRSLab - Projetos</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -22,19 +23,18 @@
         </div>
     </header>
 
-    <!-- /* COLOCADO PARA FACILITAR NAVEGACAO ENTRE AS PAG ADM. IGNORAR-->
-
     <div class="admin-layout">
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar-placeholder">
             <nav class="sidebar-menu">
-                <a href="membros-admin.html">Membros</a>
+                <a href="inicio-admin.html">Página Inicial</a>
                 <a href="artigos-admin.html">Artigos e Publicações</a>
+                <a href="noticias-admin.html">Notícias</a>
+                <a href="membros-admin.html">Membros</a>
                 <a href="projetos-admin.html">Projetos</a>
+                <a href="vagas-admin.html">Vagas</a>
                 <a href="../pagina-inicial" target="_blank">Ir ao Site</a>
             </nav>
         </aside>
-  <!-- /* COLOCADO PARA FACILITAR NAVEGACAO ENTRE AS PAG ADM. IGNORAR-->
-
 
         <main>
             <div class="admin-membros-header">
@@ -51,7 +51,6 @@
                 </button>
             </div>
 
-            <!-- LISTAGEM DE PROJETOS -->
             <section id="container-projetos">
                 <h2>Carregando Projetos...</h2>
             </section>
@@ -92,12 +91,18 @@
                     </label>
                 </div>
 
+                <!-- CHECKBOX DE DESTAQUE -->
+                <label>
+                    <input type="checkbox" id="destaque" name="destaque">
+                    Marcar como projeto em destaque
+                </label>
+
                 <button type="submit" class="btn-primary">Cadastrar Projeto</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL DE ATUALIZAÇÃO -->
+    <!-- MODAL ATUALIZAR -->
     <div id="modal-atualizacao" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -119,7 +124,6 @@
                     <option value="finalizado">Finalizado</option>
                 </select>
 
-
                 <label for="edit-conteudo">Descrição / Resumo:</label>
                 <textarea id="edit-conteudo" name="conteudo" rows="5" required></textarea>
 
@@ -137,9 +141,14 @@
                     </label>
                 </div>
 
+                <!-- CHECKBOX DE DESTAQUE -->
+                <label>
+                    <input type="checkbox" id="edit-destaque" name="destaque">
+                    Marcar como projeto em destaque
+                </label>
+
                 <button type="submit" class="btn-primary">Atualizar Projeto</button>
             </form>
-
         </div>
     </div>
 
@@ -155,12 +164,10 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div id="custom-toast">
         <span id="toast-message"></span>
     </div>
 
     <script src="projetos-admin.js"></script>
 </body>
-
 </html>
