@@ -23,7 +23,6 @@
 | RNF02     |  Permitir o acesso seguro aos recursos de gerenciamento e edição do site.              |  Aplicar as linguagens (HTML, CSS e JavaScript) na página Administrativa.         |     Alta 🟥      |
 | RNF01     |  Garantir a usabilidade, melhorar o acesso e o engajamento, flexibilidade de layout etc.            |   Implementar responsividade (media queries para mobile, tablet e desktop).         |   Alta 🟥        |
 | RNF01.1     | Validar e garantir a experiência do usuário (UX) em um ambiente real e diversificado.               |  Testar responsividade e compatibilidade entre navegadores.         |  Alta 🟥         |
-| RNF04     | Garantir a acessibilidade global do seu conteúdo, atendendo tanto ao público local quanto à comunidade científica internacional.               |   Seletor de idioma (Português/Inglês.         |   Média 🟧        |
 | RNF03     | Garantir que o site seja rápido, eficiente e leve para todos os usuários.               | Otimizar imagens e verificar tempo de carregamento.          |  Alta 🟥         |
 
 
