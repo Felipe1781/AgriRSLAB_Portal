@@ -40,9 +40,9 @@ Todas as entregas serão realizadas conforme os prazos acordados com o cliente. 
 
 | Sprint | Entrega       | Status |                 Relatório                  | Tasks |
 |------: |---------------|:------:|:------------------------------------------:|:-----:|
-| 1      | 📅 08/10/2025 | ✅     | [Ver Backlog](docs/sprint1.md#backlog)     | —     |
-| 2      | 📅 04/11/2025 | 🚧  | [Ver Backlog](docs/sprint2.md#backlog)                                         | —     |
-| 3      | 📅 25/11/2025 | —      | —                                          | —     |
+| 1      | 📅 08/10/2025 | ✅     | [Ver Backlog](docs/sprint1.md#backlog)     | ✅     |
+| 2      | 📅 04/11/2025 | ✅  | [Ver Backlog](docs/sprint2.md#backlog)                                         | ✅     |
+| 3      | 📅 25/11/2025 | 🚧      | [Ver Backlog](https://github.com/404NotFound-ABP/AgriRSLAB_Portal/blob/b101f8361ab7a1a88254475e287edebc253a0282/docs/sprint3.md)                                          | —     |
 
 
 </div>
@@ -52,7 +52,9 @@ Todas as entregas serão realizadas conforme os prazos acordados com o cliente. 
 - 🚧 **Em Progresso**
 - `—` **Não iniciado**
 
-A apresentação da Sprint 1 em vídeo pode ser acessada [aqui](https://youtu.be/8NwBtAC9zXE).
+A apresentação da *Sprint 1* em vídeo pode ser acessada [aqui](https://youtu.be/8NwBtAC9zXE).
+
+A apresentação da *Sprint 2* em vídeo pode ser acessada [aqui](https://youtu.be/8m5mneY6ezg).
 
 [↑ Voltar ao topo](#topo)
 
@@ -134,8 +136,8 @@ A apresentação da Sprint 1 em vídeo pode ser acessada [aqui](https://youtu.be
 
 | ID      | Seção / Atividade | Pontuação | Disciplina | Sprint |
 |---------|-------------------|-----------|------------|--------|
-| *ES-014* | *Scrum Master:* Facilitar cerimônias ágeis, acompanhar impedimentos, garantir comunicação eficaz e apoiar a equipe na aplicação do DoD. | 20 | ES | 1, 2, 3 |
-| *ES-015* | *Product Owner:* Refinar e priorizar backlog, alinhar requisitos com stakeholders, validar entregas nas reviews e garantir clareza nos critérios de aceitação. | 20 | ES | 1, 2, 3 |
+| ES-014 | *Scrum Master:* Facilitar cerimônias ágeis, acompanhar impedimentos, garantir comunicação eficaz e apoiar a equipe na aplicação do DoD. | 20 | ES | 1, 2, 3 |
+| ES-015 | *Product Owner:* Refinar e priorizar backlog, alinhar requisitos com stakeholders, validar entregas nas reviews e garantir clareza nos critérios de aceitação. | 20 | ES | 1, 2, 3 |
 
 <a id="tecnologias"></a>
 ## Tecnologias
