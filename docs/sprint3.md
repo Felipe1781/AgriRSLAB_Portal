@@ -28,7 +28,7 @@ Use esta tabela para acompanhar todas as tasks do projeto. Marque ⬜ para pende
 
 | ID      | Tarefa                     | Autor           | Data  | Pontuação | Disciplina | Requisitos Atendidos | Status |
 |---------|----------------------------|-----------------|-------|-----------|------------|---------------------|--------|
-|  | Subir projeto                    |           |       |           |            |     RNF05                 |  ⬜    |
+| ES-016 | Subir projeto                    |   William e Felipe        |   --    |     20      |    ES        |     RNF05                 |  ⬜    |
 | SO-006 | Documentação                  |   Pedro         |   10/11   |    20       |    SO        |        --             |  ✅    |
 | DW-013 | Botão de pesquisa            |  Ariana           | 18/11  |     10      |     DW       |                     |   ⬜   |
 | MB-002 | Ligar filtros da página de artigos ao BD                    |  Felipe e William           | 06/11 |     10      |    MB        |       RF07              |  ✅    |
